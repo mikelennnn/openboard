@@ -74,6 +74,7 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
     private final ImageButton mClipboardKey;
     private final ImageButton mOtherKey;
     private final TextView mAiKey;
+    private final ImageButton mCorrectKey;
     MainKeyboardView mMainKeyboardView;
 
     private final View mMoreSuggestionsContainer;
@@ -136,6 +137,7 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         mClipboardKey = findViewById(R.id.suggestions_strip_clipboard_key);
         mOtherKey = findViewById(R.id.suggestions_strip_other_key);
         mAiKey = findViewById(R.id.suggestions_strip_ai_key);
+        mCorrectKey = findViewById(R.id.suggestions_strip_correct_key);
         mStripVisibilityGroup = new StripVisibilityGroup(this, mSuggestionsStrip);
 
         for (int pos = 0; pos < SuggestedWords.MAX_SUGGESTIONS; pos++) {
@@ -178,6 +180,7 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         mClipboardKey.setOnClickListener(this);
         mClipboardKey.setOnLongClickListener(this);
         mAiKey.setOnClickListener(this);
+        mCorrectKey.setOnClickListener(this);
 
         mOtherKey.setImageDrawable(iconIncognito);
     }
@@ -199,6 +202,7 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         mClipboardKey.setVisibility(currentSettingsValues.mShowsClipboardKey ? VISIBLE : (mVoiceKey.getVisibility() == GONE ? INVISIBLE : GONE));
         mOtherKey.setVisibility(currentSettingsValues.mIncognitoModeEnabled ? VISIBLE : INVISIBLE);
         mAiKey.setVisibility(VISIBLE);
+        mCorrectKey.setVisibility(VISIBLE);
     }
 
     public void setSuggestions(final SuggestedWords suggestedWords, final boolean isRtlLanguage) {
@@ -454,6 +458,12 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         }
         if (view == mAiKey) {
             mListener.onCodeInput(Constants.CODE_AI_ASSIST,
+                    Constants.SUGGESTION_STRIP_COORDINATE, Constants.SUGGESTION_STRIP_COORDINATE,
+                    false /* isKeyRepeat */);
+            return;
+        }
+        if (view == mCorrectKey) {
+            mListener.onCodeInput(Constants.CODE_CORRECT_TEXT,
                     Constants.SUGGESTION_STRIP_COORDINATE, Constants.SUGGESTION_STRIP_COORDINATE,
                     false /* isKeyRepeat */);
             return;
