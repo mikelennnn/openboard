@@ -709,6 +709,9 @@ public final class InputLogic {
                 // Note: Switching back from clipboard keyboard to the main keyboard is being
                 // handled in {@link KeyboardState#onEvent(Event,int)}.
                 break;
+            case Constants.CODE_AI_ASSIST:
+                handleAiAssistKey();
+                break;
             case Constants.CODE_SHIFT_ENTER:
                 final Event tmpEvent = Event.createSoftwareKeypressEvent(Constants.CODE_ENTER,
                         event.getMKeyCode(), event.getMX(), event.getMY(), event.isKeyRepeat());
@@ -729,6 +732,49 @@ public final class InputLogic {
             default:
                 throw new RuntimeException("Unknown key code : " + event.getMKeyCode());
         }
+    }
+
+    // Cuantos caracteres antes del cursor se toman como "lo que el usuario escribio"
+    // para mandarselo a la IA.
+    private static final int AI_ASSIST_MAX_CHARS = 4000;
+
+    /**
+     * Se llama cuando se presiona el boton "IA" de la barra del teclado.
+     * Toma el texto que el usuario ya escribio antes del cursor, lo manda a la IA
+     * (OpenRouter) y, cuando llega la respuesta, borra ese texto y pone la respuesta
+     * en su lugar. Si no hay nada escrito, no hace nada.
+     */
+    private void handleAiAssistKey() {
+        final CharSequence textBeforeCursor =
+                mConnection.getTextBeforeCursor(AI_ASSIST_MAX_CHARS, 0);
+        if (TextUtils.isEmpty(textBeforeCursor)
+                || TextUtils.getTrimmedLength(textBeforeCursor) == 0) {
+            // No hay texto escrito todavia: no hacemos nada, como se pidio.
+            return;
+        }
+        final String prompt = textBeforeCursor.toString();
+        final int originalLength = prompt.length();
+
+        android.widget.Toast.makeText(mLatinIME, "Pensando...", android.widget.Toast.LENGTH_SHORT)
+                .show();
+
+        org.dslul.openboard.inputmethod.latin.OpenRouterAI.send(prompt,
+                new org.dslul.openboard.inputmethod.latin.OpenRouterAI.Callback() {
+            @Override
+            public void onResult(final String responseText) {
+                if (TextUtils.isEmpty(responseText)) {
+                    return;
+                }
+                mConnection.deleteTextBeforeCursor(originalLength);
+                mConnection.commitText(responseText, 1);
+            }
+
+            @Override
+            public void onError(final String errorMessage) {
+                android.widget.Toast.makeText(mLatinIME, "Error de IA: " + errorMessage,
+                        android.widget.Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     /**
