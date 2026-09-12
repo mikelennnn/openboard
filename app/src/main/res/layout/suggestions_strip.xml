@@ -30,6 +30,13 @@
         <!-- Provide audio and haptic feedback by ourselves based on the keyboard settings.
              We just need to ignore the system's audio and haptic feedback settings. -->
         <ImageButton
+            android:id="@+id/suggestions_strip_translate_key"
+            android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
+            android:layout_height="fill_parent"
+            android:src="@drawable/ic_translate_globe"
+            android:contentDescription="TRADUCIR"
+            style="?attr/suggestionWordStyle" />
+        <ImageButton
             android:id="@+id/suggestions_strip_other_key"
             android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
             android:layout_height="fill_parent"
@@ -81,6 +88,13 @@
             android:layout_height="fill_parent"
             android:src="@drawable/ic_rude_burst"
             android:contentDescription="GROSERO"
+            style="?attr/suggestionWordStyle" />
+        <ImageButton
+            android:id="@+id/suggestions_strip_formal_key"
+            android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
+            android:layout_height="fill_parent"
+            android:src="@drawable/ic_formal_hat"
+            android:contentDescription="FORMAL"
             style="?attr/suggestionWordStyle" />
     </LinearLayout>
 </merge>
