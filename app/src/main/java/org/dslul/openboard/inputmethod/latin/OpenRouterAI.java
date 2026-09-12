@@ -53,7 +53,7 @@ public final class OpenRouterAI {
             @Override
             public void run() {
                 try {
-                    final String result = requestCompletion(prompt);
+                    final String result = requestCompletionWithRetry(prompt);
                     mainHandler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -72,6 +72,50 @@ public final class OpenRouterAI {
                 }
             }
         }).start();
+    }
+
+    private static final int MAX_RETRIES_503 = 3;
+    private static final long INITIAL_RETRY_DELAY_MS = 2000L;
+
+    /**
+     * Excepcion interna que guarda el codigo HTTP recibido, para poder decidir
+     * si conviene reintentar (503) o no (401, 429, etc.).
+     */
+    private static final class HttpStatusException extends IOException {
+        final int statusCode;
+
+        HttpStatusException(final int statusCode, final String message) {
+            super(message);
+            this.statusCode = statusCode;
+        }
+    }
+
+    /**
+     * Igual que requestCompletion, pero si el servidor responde 503 (ocupado/caido
+     * momentaneamente), espera un poco y reintenta, duplicando la espera cada vez
+     * (2s, 4s, 8s). Si tras varios intentos sigue fallando, ahi si se rinde.
+     */
+    private static String requestCompletionWithRetry(final String prompt) throws IOException {
+        long delay = INITIAL_RETRY_DELAY_MS;
+        for (int attempt = 0; ; attempt++) {
+            try {
+                return requestCompletion(prompt);
+            } catch (final HttpStatusException e) {
+                final boolean isLastAttempt = attempt >= MAX_RETRIES_503;
+                if (e.statusCode != 503 || isLastAttempt) {
+                    throw e;
+                }
+                Log.w(TAG, "Error 503 de Gemini, reintentando en " + delay + " ms"
+                        + " (intento " + (attempt + 1) + " de " + MAX_RETRIES_503 + ")");
+                try {
+                    Thread.sleep(delay);
+                } catch (InterruptedException interrupted) {
+                    Thread.currentThread().interrupt();
+                    throw e;
+                }
+                delay *= 2;
+            }
+        }
     }
 
     private static String requestCompletion(final String prompt) throws IOException {
@@ -112,7 +156,8 @@ public final class OpenRouterAI {
             final String rawResponse = readStream(stream);
 
             if (status < 200 || status >= 300) {
-                throw new IOException("Gemini respondio con codigo " + status + ": " + rawResponse);
+                throw new HttpStatusException(status,
+                        "Gemini respondio con codigo " + status + ": " + rawResponse);
             }
 
             final JSONObject json = new JSONObject(rawResponse);
@@ -150,3 +195,4 @@ public final class OpenRouterAI {
         return sb.toString();
     }
 }
+
