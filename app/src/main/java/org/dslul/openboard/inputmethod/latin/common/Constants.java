@@ -257,6 +257,8 @@ public final class Constants {
     public static final int CODE_RUDE_TEXT = -23;
     public static final int CODE_TRANSLATE_TEXT = -24;
     public static final int CODE_FORMAL_TEXT = -25;
+    public static final int CODE_ROMANTIC_TEXT = -26;
+    public static final int CODE_DETAIL_TEXT = -27;
 
     public static boolean isLetterCode(final int code) {
         return code >= CODE_SPACE;
@@ -286,6 +288,8 @@ public final class Constants {
         case CODE_RUDE_TEXT: return "rudeText";
         case CODE_TRANSLATE_TEXT: return "translateText";
         case CODE_FORMAL_TEXT: return "formalText";
+        case CODE_ROMANTIC_TEXT: return "romanticText";
+        case CODE_DETAIL_TEXT: return "detailText";
         case CODE_TAB: return "tab";
         case CODE_ENTER: return "enter";
         case CODE_SPACE: return "space";
@@ -353,3 +357,4 @@ public final class Constants {
         // This utility class is not publicly instantiable.
     }
 }
+
