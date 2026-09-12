@@ -1138,8 +1138,8 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
     /**
      * Muestra el panel de chat de la IA en vez del teclado.
      */
-    public void showAiPanel() {
-        mKeyboardSwitcher.showAiPanel();
+    public void showAiPanel(final String question, final int questionLength) {
+        mKeyboardSwitcher.showAiPanel(question, questionLength);
     }
 
     /**
