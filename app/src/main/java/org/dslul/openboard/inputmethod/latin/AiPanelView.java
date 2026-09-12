@@ -171,6 +171,7 @@ public final class AiPanelView extends LinearLayout implements View.OnClickListe
             final TextView bubble = new TextView(getContext());
             final boolean isUser = "user".equals(message[0]);
             bubble.setText((isUser ? "Tu: " : "IA: ") + message[1]);
+            bubble.setTextColor(0xFF4D4D4D);
             bubble.setPadding(8, 6, 8, 6);
             mChatContainer.addView(bubble);
         }
@@ -269,4 +270,3 @@ public final class AiPanelView extends LinearLayout implements View.OnClickListe
                 .getString(KEY_MEMORY, "");
     }
 }
-
