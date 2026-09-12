@@ -341,7 +341,7 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
     /**
      * Muestra el panel de chat de la IA en vez del teclado normal.
      */
-    public void showAiPanel() {
+    public void showAiPanel(final String question, final int questionLength) {
         if (mAiPanelView == null) {
             return;
         }
@@ -351,7 +351,7 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
         mEmojiPalettesView.stopEmojiPalettes();
         mClipboardHistoryView.setVisibility(View.GONE);
         mClipboardHistoryView.stopClipboardHistory();
-        mAiPanelView.open(mLatinIME);
+        mAiPanelView.open(mLatinIME, question, questionLength);
         mAiPanelView.setVisibility(View.VISIBLE);
     }
 
@@ -613,3 +613,4 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
         return mKeyboardLayoutSet.getScriptId();
     }
 }
+
