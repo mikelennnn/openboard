@@ -1150,6 +1150,20 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
     }
 
     /**
+     * Muestra el panel para elegir idioma de traduccion.
+     */
+    public void showTranslatePanel(final String text, final int textLength) {
+        mKeyboardSwitcher.showTranslatePanel(text, textLength);
+    }
+
+    /**
+     * Vuelve del panel de traduccion al teclado normal.
+     */
+    public void hideTranslatePanel() {
+        mKeyboardSwitcher.hideTranslatePanel();
+    }
+
+    /**
      * This is called when the user has clicked on the extracted text view,
      * when running in fullscreen mode.  The default implementation hides
      * the suggestions view when this happens, but only if the extracted text
