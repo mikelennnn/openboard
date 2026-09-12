@@ -1,6 +1,8 @@
 /*
- * Archivo agregado para la funcion de boton "IA" del teclado.
- * Envia el texto ya escrito por el usuario a OpenRouter y devuelve la respuesta.
+ * Archivo agregado para la funcion del panel de IA del teclado.
+ * Envia el texto ya escrito por el usuario a Gemini y devuelve la respuesta.
+ * (El nombre del archivo/clase quedo como OpenRouterAI por historia, pero ahora
+ * habla con la API de Gemini, no con OpenRouter.)
  */
 package org.dslul.openboard.inputmethod.latin;
 
@@ -25,10 +27,12 @@ public final class OpenRouterAI {
     private static final String TAG = "OpenRouterAI";
 
     // TODO: si cambias de cuenta o de modelo, edita estas dos lineas.
-    private static final String API_KEY = "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";
-    private static final String MODEL = "openrouter/free";
+    private static final String API_KEY = "AQ.Ab8RN6InNqAfORv5HDZetAGENwlVeKJi810XSyYuTyjiTmiMQA";
+    private static final String MODEL = "gemini-3.7-flash";
 
-    private static final String ENDPOINT = "https://openrouter.ai/api/v1/chat/completions";
+    private static final String ENDPOINT =
+            "https://generativelanguage.googleapis.com/v1beta/models/" + MODEL
+                    + ":generateContent?key=" + API_KEY;
 
     public interface Callback {
         void onResult(String responseText);
@@ -57,7 +61,7 @@ public final class OpenRouterAI {
                         }
                     });
                 } catch (final Exception e) {
-                    Log.e(TAG, "Error llamando a OpenRouter", e);
+                    Log.e(TAG, "Error llamando a Gemini", e);
                     final String message = e.getMessage() != null ? e.getMessage() : "Error desconocido";
                     mainHandler.post(new Runnable() {
                         @Override
@@ -76,20 +80,21 @@ public final class OpenRouterAI {
         try {
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
-            connection.setRequestProperty("Authorization", "Bearer " + API_KEY);
             connection.setDoOutput(true);
             connection.setConnectTimeout(20000);
             connection.setReadTimeout(30000);
 
             final JSONObject body = new JSONObject();
             try {
-                body.put("model", MODEL);
-                final JSONArray messages = new JSONArray();
-                final JSONObject message = new JSONObject();
-                message.put("role", "user");
-                message.put("content", prompt);
-                messages.put(message);
-                body.put("messages", messages);
+                final JSONArray contents = new JSONArray();
+                final JSONObject content = new JSONObject();
+                final JSONArray parts = new JSONArray();
+                final JSONObject part = new JSONObject();
+                part.put("text", prompt);
+                parts.put(part);
+                content.put("parts", parts);
+                contents.put(content);
+                body.put("contents", contents);
             } catch (Exception e) {
                 throw new IOException("No se pudo armar la peticion", e);
             }
@@ -107,19 +112,21 @@ public final class OpenRouterAI {
             final String rawResponse = readStream(stream);
 
             if (status < 200 || status >= 300) {
-                throw new IOException("OpenRouter respondio con codigo " + status + ": " + rawResponse);
+                throw new IOException("Gemini respondio con codigo " + status + ": " + rawResponse);
             }
 
             final JSONObject json = new JSONObject(rawResponse);
-            return json.getJSONArray("choices")
+            return json.getJSONArray("candidates")
                     .getJSONObject(0)
-                    .getJSONObject("message")
-                    .getString("content")
+                    .getJSONObject("content")
+                    .getJSONArray("parts")
+                    .getJSONObject(0)
+                    .getString("text")
                     .trim();
         } catch (IOException e) {
             throw e;
         } catch (Exception e) {
-            throw new IOException("Error inesperado hablando con OpenRouter", e);
+            throw new IOException("Error inesperado hablando con Gemini", e);
         } finally {
             connection.disconnect();
         }
