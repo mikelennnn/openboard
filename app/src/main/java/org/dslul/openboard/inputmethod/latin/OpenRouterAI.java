@@ -1,8 +1,8 @@
 /*
- * Archivo agregado para la funcion del panel de IA del teclado.
- * Envia el texto ya escrito por el usuario a Gemini y devuelve la respuesta.
+ * Archivo agregado para la funcion del panel de IA y el boton CORREGIR del teclado.
+ * Envia texto a Groq (API compatible con OpenAI) y devuelve la respuesta.
  * (El nombre del archivo/clase quedo como OpenRouterAI por historia, pero ahora
- * habla con la API de Gemini, no con OpenRouter.)
+ * habla con la API de Groq, no con OpenRouter ni con Gemini.)
  */
 package org.dslul.openboard.inputmethod.latin;
 
@@ -27,12 +27,13 @@ public final class OpenRouterAI {
     private static final String TAG = "OpenRouterAI";
 
     // TODO: si cambias de cuenta o de modelo, edita estas dos lineas.
-    private static final String API_KEY = "AQ.Ab8RN6InNqAfORv5HDZetAGENwlVeKJi810XSyYuTyjiTmiMQA";
-    private static final String MODEL = "gemini-3.7-flash";
+    private static final String API_KEY = "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";
+    private static final String MODEL = "openai/gpt-oss-20b";
 
-    private static final String ENDPOINT =
-            "https://generativelanguage.googleapis.com/v1beta/models/" + MODEL
-                    + ":generateContent?key=" + API_KEY;
+    private static final String ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
+
+    private static final int MAX_RETRIES_503 = 3;
+    private static final long INITIAL_RETRY_DELAY_MS = 2000L;
 
     public interface Callback {
         void onResult(String responseText);
@@ -61,7 +62,7 @@ public final class OpenRouterAI {
                         }
                     });
                 } catch (final Exception e) {
-                    Log.e(TAG, "Error llamando a Gemini", e);
+                    Log.e(TAG, "Error llamando a Groq", e);
                     final String message = e.getMessage() != null ? e.getMessage() : "Error desconocido";
                     mainHandler.post(new Runnable() {
                         @Override
@@ -73,9 +74,6 @@ public final class OpenRouterAI {
             }
         }).start();
     }
-
-    private static final int MAX_RETRIES_503 = 3;
-    private static final long INITIAL_RETRY_DELAY_MS = 2000L;
 
     /**
      * Excepcion interna que guarda el codigo HTTP recibido, para poder decidir
@@ -105,7 +103,7 @@ public final class OpenRouterAI {
                 if (e.statusCode != 503 || isLastAttempt) {
                     throw e;
                 }
-                Log.w(TAG, "Error 503 de Gemini, reintentando en " + delay + " ms"
+                Log.w(TAG, "Error 503 de Groq, reintentando en " + delay + " ms"
                         + " (intento " + (attempt + 1) + " de " + MAX_RETRIES_503 + ")");
                 try {
                     Thread.sleep(delay);
@@ -124,21 +122,20 @@ public final class OpenRouterAI {
         try {
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Authorization", "Bearer " + API_KEY);
             connection.setDoOutput(true);
             connection.setConnectTimeout(20000);
             connection.setReadTimeout(30000);
 
             final JSONObject body = new JSONObject();
             try {
-                final JSONArray contents = new JSONArray();
-                final JSONObject content = new JSONObject();
-                final JSONArray parts = new JSONArray();
-                final JSONObject part = new JSONObject();
-                part.put("text", prompt);
-                parts.put(part);
-                content.put("parts", parts);
-                contents.put(content);
-                body.put("contents", contents);
+                body.put("model", MODEL);
+                final JSONArray messages = new JSONArray();
+                final JSONObject message = new JSONObject();
+                message.put("role", "user");
+                message.put("content", prompt);
+                messages.put(message);
+                body.put("messages", messages);
             } catch (Exception e) {
                 throw new IOException("No se pudo armar la peticion", e);
             }
@@ -157,21 +154,19 @@ public final class OpenRouterAI {
 
             if (status < 200 || status >= 300) {
                 throw new HttpStatusException(status,
-                        "Gemini respondio con codigo " + status + ": " + rawResponse);
+                        "Groq respondio con codigo " + status + ": " + rawResponse);
             }
 
             final JSONObject json = new JSONObject(rawResponse);
-            return json.getJSONArray("candidates")
+            return json.getJSONArray("choices")
                     .getJSONObject(0)
-                    .getJSONObject("content")
-                    .getJSONArray("parts")
-                    .getJSONObject(0)
-                    .getString("text")
+                    .getJSONObject("message")
+                    .getString("content")
                     .trim();
         } catch (IOException e) {
             throw e;
         } catch (Exception e) {
-            throw new IOException("Error inesperado hablando con Gemini", e);
+            throw new IOException("Error inesperado hablando con Groq", e);
         } finally {
             connection.disconnect();
         }
@@ -195,4 +190,3 @@ public final class OpenRouterAI {
         return sb.toString();
     }
 }
-
