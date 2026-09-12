@@ -1136,6 +1136,20 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
     }
 
     /**
+     * Muestra el panel de chat de la IA en vez del teclado.
+     */
+    public void showAiPanel() {
+        mKeyboardSwitcher.showAiPanel();
+    }
+
+    /**
+     * Vuelve del panel de IA al teclado normal.
+     */
+    public void hideAiPanel() {
+        mKeyboardSwitcher.hideAiPanel();
+    }
+
+    /**
      * This is called when the user has clicked on the extracted text view,
      * when running in fullscreen mode.  The default implementation hides
      * the suggestions view when this happens, but only if the extracted text
