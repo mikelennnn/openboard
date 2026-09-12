@@ -32,6 +32,7 @@ import org.dslul.openboard.inputmethod.keyboard.emoji.EmojiPalettesView;
 import org.dslul.openboard.inputmethod.keyboard.internal.KeyboardState;
 import org.dslul.openboard.inputmethod.keyboard.internal.KeyboardTextsSet;
 import org.dslul.openboard.inputmethod.latin.InputView;
+import org.dslul.openboard.inputmethod.latin.AiPanelView;
 import org.dslul.openboard.inputmethod.latin.KeyboardWrapperView;
 import org.dslul.openboard.inputmethod.latin.LatinIME;
 import org.dslul.openboard.inputmethod.latin.R;
@@ -57,6 +58,7 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
     private MainKeyboardView mKeyboardView;
     private EmojiPalettesView mEmojiPalettesView;
     private ClipboardHistoryView mClipboardHistoryView;
+    private AiPanelView mAiPanelView;
     private LatinIME mLatinIME;
     private RichInputMethodManager mRichImm;
     private boolean mIsHardwareAcceleratedDrawingEnabled;
@@ -336,6 +338,39 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
         mClipboardHistoryView.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Muestra el panel de chat de la IA en vez del teclado normal.
+     */
+    public void showAiPanel() {
+        if (mAiPanelView == null) {
+            return;
+        }
+        mMainKeyboardFrame.setVisibility(View.GONE);
+        mKeyboardView.setVisibility(View.GONE);
+        mEmojiPalettesView.setVisibility(View.GONE);
+        mEmojiPalettesView.stopEmojiPalettes();
+        mClipboardHistoryView.setVisibility(View.GONE);
+        mClipboardHistoryView.stopClipboardHistory();
+        mAiPanelView.open(mLatinIME);
+        mAiPanelView.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Vuelve al teclado normal desde el panel de IA.
+     */
+    public void hideAiPanel() {
+        if (mAiPanelView == null) {
+            return;
+        }
+        mAiPanelView.setVisibility(View.GONE);
+        mMainKeyboardFrame.setVisibility(View.VISIBLE);
+        mKeyboardView.setVisibility(View.VISIBLE);
+    }
+
+    public boolean isShowingAiPanel() {
+        return mAiPanelView != null && mAiPanelView.getVisibility() == View.VISIBLE;
+    }
+
     public enum KeyboardSwitchState {
         HIDDEN(-1),
         SYMBOLS_SHIFTED(KeyboardId.ELEMENT_SYMBOLS_SHIFTED),
@@ -537,6 +572,7 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
         mMainKeyboardFrame = mCurrentInputView.findViewById(R.id.main_keyboard_frame);
         mEmojiPalettesView = mCurrentInputView.findViewById(R.id.emoji_palettes_view);
         mClipboardHistoryView = mCurrentInputView.findViewById(R.id.clipboard_history_view);
+        mAiPanelView = mCurrentInputView.findViewById(R.id.ai_panel_view);
 
         mKeyboardViewWrapper = mCurrentInputView.findViewById(R.id.keyboard_view_wrapper);
         mKeyboardViewWrapper.setKeyboardActionListener(mLatinIME);
