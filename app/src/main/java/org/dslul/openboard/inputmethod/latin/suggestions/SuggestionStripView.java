@@ -78,6 +78,8 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
     private final ImageButton mRudeKey;
     private final ImageButton mTranslateKey;
     private final ImageButton mFormalKey;
+    private final ImageButton mRomanticKey;
+    private final ImageButton mDetailKey;
     MainKeyboardView mMainKeyboardView;
 
     private final View mMoreSuggestionsContainer;
@@ -144,6 +146,8 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         mRudeKey = findViewById(R.id.suggestions_strip_rude_key);
         mTranslateKey = findViewById(R.id.suggestions_strip_translate_key);
         mFormalKey = findViewById(R.id.suggestions_strip_formal_key);
+        mRomanticKey = findViewById(R.id.suggestions_strip_romantic_key);
+        mDetailKey = findViewById(R.id.suggestions_strip_detail_key);
         mStripVisibilityGroup = new StripVisibilityGroup(this, mSuggestionsStrip);
 
         for (int pos = 0; pos < SuggestedWords.MAX_SUGGESTIONS; pos++) {
@@ -190,6 +194,8 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         mRudeKey.setOnClickListener(this);
         mTranslateKey.setOnClickListener(this);
         mFormalKey.setOnClickListener(this);
+        mRomanticKey.setOnClickListener(this);
+        mDetailKey.setOnClickListener(this);
 
         mOtherKey.setImageDrawable(iconIncognito);
     }
@@ -215,6 +221,8 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         mRudeKey.setVisibility(VISIBLE);
         mTranslateKey.setVisibility(VISIBLE);
         mFormalKey.setVisibility(VISIBLE);
+        mRomanticKey.setVisibility(VISIBLE);
+        mDetailKey.setVisibility(VISIBLE);
     }
 
     public void setSuggestions(final SuggestedWords suggestedWords, final boolean isRtlLanguage) {
@@ -498,6 +506,18 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
                     false /* isKeyRepeat */);
             return;
         }
+        if (view == mRomanticKey) {
+            mListener.onCodeInput(Constants.CODE_ROMANTIC_TEXT,
+                    Constants.SUGGESTION_STRIP_COORDINATE, Constants.SUGGESTION_STRIP_COORDINATE,
+                    false /* isKeyRepeat */);
+            return;
+        }
+        if (view == mDetailKey) {
+            mListener.onCodeInput(Constants.CODE_DETAIL_TEXT,
+                    Constants.SUGGESTION_STRIP_COORDINATE, Constants.SUGGESTION_STRIP_COORDINATE,
+                    false /* isKeyRepeat */);
+            return;
+        }
 
         final Object tag = view.getTag();
         // {@link Integer} tag is set at
@@ -525,3 +545,4 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         // This may be overriden by showing suggestions later, if applicable.
     }
 }
+
