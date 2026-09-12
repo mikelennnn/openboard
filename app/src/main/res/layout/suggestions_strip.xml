@@ -75,5 +75,12 @@
             android:src="@drawable/ic_correct_chat"
             android:contentDescription="CORREGIR"
             style="?attr/suggestionWordStyle" />
+        <ImageButton
+            android:id="@+id/suggestions_strip_rude_key"
+            android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
+            android:layout_height="fill_parent"
+            android:src="@drawable/ic_rude_burst"
+            android:contentDescription="GROSERO"
+            style="?attr/suggestionWordStyle" />
     </LinearLayout>
 </merge>
