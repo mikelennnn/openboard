@@ -26,7 +26,7 @@ public final class OpenRouterAI {
 
     // TODO: si cambias de cuenta o de modelo, edita estas dos lineas.
     private static final String API_KEY = "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";
-    private static final String MODEL = "thinkingmachines/inkling:free";
+    private static final String MODEL = "openrouter/free";
 
     private static final String ENDPOINT = "https://openrouter.ai/api/v1/chat/completions";
 
