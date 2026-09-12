@@ -453,8 +453,6 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
             return;
         }
         if (view == mAiKey) {
-            android.widget.Toast.makeText(getContext(), "Click detectado en boton IA",
-                    android.widget.Toast.LENGTH_SHORT).show();
             mListener.onCodeInput(Constants.CODE_AI_ASSIST,
                     Constants.SUGGESTION_STRIP_COORDINATE, Constants.SUGGESTION_STRIP_COORDINATE,
                     false /* isKeyRepeat */);
@@ -487,3 +485,4 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         // This may be overriden by showing suggestions later, if applicable.
     }
 }
+
