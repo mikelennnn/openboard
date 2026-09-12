@@ -54,47 +54,72 @@
             android:layout_weight="1"
             android:hapticFeedbackEnabled="false"
             android:soundEffectsEnabled="false" />
-        <ImageButton
-            android:id="@+id/suggestions_strip_voice_key"
-            android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
-            android:layout_height="fill_parent"
-            android:contentDescription="@string/spoken_description_mic"
-            style="?attr/suggestionWordStyle" />
-        <ImageButton
-            android:id="@+id/suggestions_strip_clipboard_key"
-            android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
-            android:layout_height="fill_parent"
-            style="?attr/suggestionWordStyle" />
-        <TextView
-            android:id="@+id/suggestions_strip_ai_key"
-            android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
-            android:layout_height="fill_parent"
-            android:gravity="center"
-            android:text="IA"
-            android:textStyle="bold"
-            android:textSize="14sp"
-            android:contentDescription="IA"
-            style="?attr/suggestionWordStyle" />
-        <ImageButton
-            android:id="@+id/suggestions_strip_correct_key"
-            android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
-            android:layout_height="fill_parent"
-            android:src="@drawable/ic_correct_chat"
-            android:contentDescription="CORREGIR"
-            style="?attr/suggestionWordStyle" />
-        <ImageButton
-            android:id="@+id/suggestions_strip_rude_key"
-            android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
-            android:layout_height="fill_parent"
-            android:src="@drawable/ic_rude_burst"
-            android:contentDescription="GROSERO"
-            style="?attr/suggestionWordStyle" />
-        <ImageButton
-            android:id="@+id/suggestions_strip_formal_key"
-            android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
-            android:layout_height="fill_parent"
-            android:src="@drawable/ic_formal_hat"
-            android:contentDescription="FORMAL"
-            style="?attr/suggestionWordStyle" />
+        <HorizontalScrollView
+            android:layout_width="220dp"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:overScrollMode="never">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+                <ImageButton
+                    android:id="@+id/suggestions_strip_voice_key"
+                    android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
+                    android:layout_height="fill_parent"
+                    android:contentDescription="@string/spoken_description_mic"
+                    style="?attr/suggestionWordStyle" />
+                <ImageButton
+                    android:id="@+id/suggestions_strip_clipboard_key"
+                    android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
+                    android:layout_height="fill_parent"
+                    style="?attr/suggestionWordStyle" />
+                <TextView
+                    android:id="@+id/suggestions_strip_ai_key"
+                    android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
+                    android:layout_height="fill_parent"
+                    android:gravity="center"
+                    android:text="IA"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:contentDescription="IA"
+                    style="?attr/suggestionWordStyle" />
+                <ImageButton
+                    android:id="@+id/suggestions_strip_correct_key"
+                    android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
+                    android:layout_height="fill_parent"
+                    android:src="@drawable/ic_correct_chat"
+                    android:contentDescription="CORREGIR"
+                    style="?attr/suggestionWordStyle" />
+                <ImageButton
+                    android:id="@+id/suggestions_strip_rude_key"
+                    android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
+                    android:layout_height="fill_parent"
+                    android:src="@drawable/ic_rude_burst"
+                    android:contentDescription="GROSERO"
+                    style="?attr/suggestionWordStyle" />
+                <ImageButton
+                    android:id="@+id/suggestions_strip_formal_key"
+                    android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
+                    android:layout_height="fill_parent"
+                    android:src="@drawable/ic_formal_hat"
+                    android:contentDescription="FORMAL"
+                    style="?attr/suggestionWordStyle" />
+                <ImageButton
+                    android:id="@+id/suggestions_strip_romantic_key"
+                    android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
+                    android:layout_height="fill_parent"
+                    android:src="@drawable/ic_romantic_heart"
+                    android:contentDescription="ROMANTICO"
+                    style="?attr/suggestionWordStyle" />
+                <ImageButton
+                    android:id="@+id/suggestions_strip_detail_key"
+                    android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
+                    android:layout_height="fill_parent"
+                    android:src="@drawable/ic_detail_doc"
+                    android:contentDescription="DETALLAR"
+                    style="?attr/suggestionWordStyle" />
+            </LinearLayout>
+        </HorizontalScrollView>
     </LinearLayout>
 </merge>
