@@ -1,5 +1,8 @@
 /*
  * Panel de chat con la IA. Se muestra en vez del teclado cuando se toca el boton "IA".
+ * El usuario escribe su pregunta en el campo normal (con el teclado), y al tocar el
+ * boton este panel se abre y manda esa pregunta automaticamente (aqui no se puede
+ * escribir porque el teclado esta oculto mientras el panel esta abierto).
  * Guarda el chat en el celular; si pasan 24 horas sin usarlo, borra lo visible pero
  * conserva un resumen corto para que la IA siga teniendo algo de contexto.
  */
@@ -12,7 +15,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -33,14 +35,14 @@ public final class AiPanelView extends LinearLayout implements View.OnClickListe
 
     private LinearLayout mChatContainer;
     private ScrollView mScrollView;
-    private EditText mInputField;
-    private Button mAskButton;
+    private TextView mStatusText;
     private Button mInsertButton;
     private Button mBackButton;
 
     private LatinIME mLatinIME;
     private final List<String[]> mMessages = new ArrayList<>(); // {rol, texto}
     private String mLastAnswer = "";
+    private int mLastQuestionLength = 0;
 
     public AiPanelView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
@@ -51,29 +53,39 @@ public final class AiPanelView extends LinearLayout implements View.OnClickListe
         super.onFinishInflate();
         mChatContainer = findViewById(R.id.ai_panel_chat_container);
         mScrollView = findViewById(R.id.ai_panel_scroll);
-        mInputField = findViewById(R.id.ai_panel_input);
-        mAskButton = findViewById(R.id.ai_panel_ask_button);
+        mStatusText = findViewById(R.id.ai_panel_status);
         mInsertButton = findViewById(R.id.ai_panel_insert_button);
         mBackButton = findViewById(R.id.ai_panel_back_button);
-        mAskButton.setOnClickListener(this);
         mInsertButton.setOnClickListener(this);
         mBackButton.setOnClickListener(this);
     }
 
     /**
-     * Se llama cada vez que se abre el panel (al tocar el boton "IA").
+     * Se llama cada vez que se toca el boton "IA". Si hay una pregunta nueva
+     * (lo que el usuario ya escribio en el campo), la agrega al chat y la manda sola.
+     *
+     * @param question texto ya escrito por el usuario, o vacio si no habia nada.
+     * @param questionLength cuantos caracteres antes del cursor ocupaba esa pregunta,
+     *                        para poder borrarlos si despues se inserta la respuesta.
      */
-    public void open(final LatinIME latinIME) {
+    public void open(final LatinIME latinIME, final String question, final int questionLength) {
         mLatinIME = latinIME;
         loadChatFromStorage();
         renderMessages();
+
+        if (!TextUtils.isEmpty(question)) {
+            mLastQuestionLength = questionLength;
+            addMessage("user", question);
+            renderMessages();
+            askQuestion();
+        } else {
+            mStatusText.setVisibility(VISIBLE);
+        }
     }
 
     @Override
     public void onClick(final View view) {
-        if (view == mAskButton) {
-            askQuestion();
-        } else if (view == mInsertButton) {
+        if (view == mInsertButton) {
             insertLastAnswer();
         } else if (view == mBackButton) {
             if (mLatinIME != null) {
@@ -83,24 +95,18 @@ public final class AiPanelView extends LinearLayout implements View.OnClickListe
     }
 
     private void askQuestion() {
-        if (mInputField == null || mLatinIME == null) {
+        if (mLatinIME == null) {
             return;
         }
-        final String question = mInputField.getText().toString().trim();
-        if (TextUtils.isEmpty(question)) {
-            return;
-        }
-        mInputField.setText("");
-        addMessage("user", question);
-        renderMessages();
-        mAskButton.setEnabled(false);
+        mStatusText.setVisibility(VISIBLE);
+        mStatusText.setText("Pensando...");
 
         final String prompt = buildPromptWithHistory();
 
         OpenRouterAI.send(prompt, new OpenRouterAI.Callback() {
             @Override
             public void onResult(final String responseText) {
-                mAskButton.setEnabled(true);
+                mStatusText.setVisibility(GONE);
                 final String answer = TextUtils.isEmpty(responseText)
                         ? "(sin respuesta)" : responseText;
                 addMessage("assistant", answer);
@@ -111,7 +117,7 @@ public final class AiPanelView extends LinearLayout implements View.OnClickListe
 
             @Override
             public void onError(final String errorMessage) {
-                mAskButton.setEnabled(true);
+                mStatusText.setVisibility(GONE);
                 addMessage("assistant", "Error: " + errorMessage);
                 mLastAnswer = "";
                 renderMessages();
@@ -126,8 +132,12 @@ public final class AiPanelView extends LinearLayout implements View.OnClickListe
         }
         final InputConnection ic = mLatinIME.getCurrentInputConnection();
         if (ic != null) {
+            if (mLastQuestionLength > 0) {
+                ic.deleteSurroundingText(mLastQuestionLength, 0);
+            }
             ic.commitText(mLastAnswer, 1);
         }
+        mLastQuestionLength = 0;
         mLatinIME.hideAiPanel();
     }
 
@@ -185,7 +195,6 @@ public final class AiPanelView extends LinearLayout implements View.OnClickListe
         final long lastTime = prefs.getLong(KEY_LAST_TIME, 0L);
         final long now = System.currentTimeMillis();
         if (now - lastTime > EXPIRY_MILLIS) {
-            // Pasaron mas de 24 horas: se borra el chat visible, la memoria se conserva.
             return;
         }
         final String json = prefs.getString(KEY_CHAT_JSON, null);
@@ -235,8 +244,6 @@ public final class AiPanelView extends LinearLayout implements View.OnClickListe
         if (mLatinIME == null) {
             return;
         }
-        // Guardamos un resumen corto de los ultimos intercambios para que la IA
-        // siga recordando algo aunque el chat visible se borre a las 24 horas.
         final StringBuilder sb = new StringBuilder();
         final int start = Math.max(0, mMessages.size() - 6);
         for (int i = start; i < mMessages.size(); i++) {
@@ -262,3 +269,4 @@ public final class AiPanelView extends LinearLayout implements View.OnClickListe
                 .getString(KEY_MEMORY, "");
     }
 }
+
