@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.dslul.openboard.inputmethod.latin.AiPanelView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:background="?android:attr/colorBackground"
+        android:visibility="gone">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+
+        <TextView
+                android:id="@+id/ai_panel_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="✨ IA"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="?android:attr/textColorPrimary"/>
+
+    </LinearLayout>
+
+    <ScrollView
+            android:id="@+id/ai_panel_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp">
+
+        <LinearLayout
+                android:id="@+id/ai_panel_chat_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+
+    </ScrollView>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp">
+
+        <EditText
+                android:id="@+id/ai_panel_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Preguntale a la IA..."
+                android:inputType="textShortMessage"
+                android:maxLines="3"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textColorHint="?android:attr/textColorSecondary"/>
+
+        <Button
+                android:id="@+id/ai_panel_ask_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Preguntar"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="8dp">
+
+        <Button
+                android:id="@+id/ai_panel_insert_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Insertar respuesta"/>
+
+        <Button
+                android:id="@+id/ai_panel_back_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Volver al teclado"/>
+
+    </LinearLayout>
+
+</org.dslul.openboard.inputmethod.latin.AiPanelView>
