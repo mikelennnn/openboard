@@ -58,5 +58,15 @@
             android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
             android:layout_height="fill_parent"
             style="?attr/suggestionWordStyle" />
+        <TextView
+            android:id="@+id/suggestions_strip_ai_key"
+            android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="IA"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:contentDescription="IA"
+            style="?attr/suggestionWordStyle" />
     </LinearLayout>
 </merge>
