@@ -5,7 +5,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:orientation="vertical"
-        android:background="?android:attr/colorBackground"
+        android:background="#0D0D0D"
         android:visibility="gone">
 
     <LinearLayout
@@ -69,6 +69,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:backgroundTint="#68769B"
+                android:textColor="#FFFFFF"
                 android:text="Insertar respuesta"/>
 
         <Button
@@ -76,6 +78,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:backgroundTint="#68769B"
+                android:textColor="#FFFFFF"
                 android:text="Volver al teclado"/>
 
     </LinearLayout>
