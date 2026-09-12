@@ -76,6 +76,8 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
     private final TextView mAiKey;
     private final ImageButton mCorrectKey;
     private final ImageButton mRudeKey;
+    private final ImageButton mTranslateKey;
+    private final ImageButton mFormalKey;
     MainKeyboardView mMainKeyboardView;
 
     private final View mMoreSuggestionsContainer;
@@ -140,6 +142,8 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         mAiKey = findViewById(R.id.suggestions_strip_ai_key);
         mCorrectKey = findViewById(R.id.suggestions_strip_correct_key);
         mRudeKey = findViewById(R.id.suggestions_strip_rude_key);
+        mTranslateKey = findViewById(R.id.suggestions_strip_translate_key);
+        mFormalKey = findViewById(R.id.suggestions_strip_formal_key);
         mStripVisibilityGroup = new StripVisibilityGroup(this, mSuggestionsStrip);
 
         for (int pos = 0; pos < SuggestedWords.MAX_SUGGESTIONS; pos++) {
@@ -184,6 +188,8 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         mAiKey.setOnClickListener(this);
         mCorrectKey.setOnClickListener(this);
         mRudeKey.setOnClickListener(this);
+        mTranslateKey.setOnClickListener(this);
+        mFormalKey.setOnClickListener(this);
 
         mOtherKey.setImageDrawable(iconIncognito);
     }
@@ -207,6 +213,8 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         mAiKey.setVisibility(VISIBLE);
         mCorrectKey.setVisibility(VISIBLE);
         mRudeKey.setVisibility(VISIBLE);
+        mTranslateKey.setVisibility(VISIBLE);
+        mFormalKey.setVisibility(VISIBLE);
     }
 
     public void setSuggestions(final SuggestedWords suggestedWords, final boolean isRtlLanguage) {
@@ -474,6 +482,18 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         }
         if (view == mRudeKey) {
             mListener.onCodeInput(Constants.CODE_RUDE_TEXT,
+                    Constants.SUGGESTION_STRIP_COORDINATE, Constants.SUGGESTION_STRIP_COORDINATE,
+                    false /* isKeyRepeat */);
+            return;
+        }
+        if (view == mTranslateKey) {
+            mListener.onCodeInput(Constants.CODE_TRANSLATE_TEXT,
+                    Constants.SUGGESTION_STRIP_COORDINATE, Constants.SUGGESTION_STRIP_COORDINATE,
+                    false /* isKeyRepeat */);
+            return;
+        }
+        if (view == mFormalKey) {
+            mListener.onCodeInput(Constants.CODE_FORMAL_TEXT,
                     Constants.SUGGESTION_STRIP_COORDINATE, Constants.SUGGESTION_STRIP_COORDINATE,
                     false /* isKeyRepeat */);
             return;
