@@ -34,6 +34,7 @@ import org.dslul.openboard.inputmethod.keyboard.internal.KeyboardTextsSet;
 import org.dslul.openboard.inputmethod.latin.InputView;
 import org.dslul.openboard.inputmethod.latin.AiPanelView;
 import org.dslul.openboard.inputmethod.latin.TranslatePanelView;
+import org.dslul.openboard.inputmethod.latin.FontPanelView;
 import org.dslul.openboard.inputmethod.latin.KeyboardWrapperView;
 import org.dslul.openboard.inputmethod.latin.LatinIME;
 import org.dslul.openboard.inputmethod.latin.R;
@@ -61,6 +62,7 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
     private ClipboardHistoryView mClipboardHistoryView;
     private AiPanelView mAiPanelView;
     private TranslatePanelView mTranslatePanelView;
+    private FontPanelView mFontPanelView;
     private LatinIME mLatinIME;
     private RichInputMethodManager mRichImm;
     private boolean mIsHardwareAcceleratedDrawingEnabled;
@@ -402,6 +404,35 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
         mKeyboardView.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Muestra el panel para elegir estilo de fuente.
+     */
+    public void showFontPanel(final String text, final int textLength) {
+        if (mFontPanelView == null) {
+            return;
+        }
+        mMainKeyboardFrame.setVisibility(View.GONE);
+        mKeyboardView.setVisibility(View.GONE);
+        mEmojiPalettesView.setVisibility(View.GONE);
+        mEmojiPalettesView.stopEmojiPalettes();
+        mClipboardHistoryView.setVisibility(View.GONE);
+        mClipboardHistoryView.stopClipboardHistory();
+        mFontPanelView.open(mLatinIME, text, textLength);
+        mFontPanelView.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Vuelve al teclado normal desde el panel de fuentes.
+     */
+    public void hideFontPanel() {
+        if (mFontPanelView == null) {
+            return;
+        }
+        mFontPanelView.setVisibility(View.GONE);
+        mMainKeyboardFrame.setVisibility(View.VISIBLE);
+        mKeyboardView.setVisibility(View.VISIBLE);
+    }
+
     public enum KeyboardSwitchState {
         HIDDEN(-1),
         SYMBOLS_SHIFTED(KeyboardId.ELEMENT_SYMBOLS_SHIFTED),
@@ -605,6 +636,7 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
         mClipboardHistoryView = mCurrentInputView.findViewById(R.id.clipboard_history_view);
         mAiPanelView = mCurrentInputView.findViewById(R.id.ai_panel_view);
         mTranslatePanelView = mCurrentInputView.findViewById(R.id.translate_panel_view);
+        mFontPanelView = mCurrentInputView.findViewById(R.id.font_panel_view);
 
         mKeyboardViewWrapper = mCurrentInputView.findViewById(R.id.keyboard_view_wrapper);
         mKeyboardViewWrapper.setKeyboardActionListener(mLatinIME);
@@ -645,3 +677,4 @@ public final class KeyboardSwitcher implements KeyboardState.SwitchActions {
         return mKeyboardLayoutSet.getScriptId();
     }
 }
+
