@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.dslul.openboard.inputmethod.latin.FontPanelView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:background="#0D0D0D"
+        android:visibility="gone">
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="✏️ Elegir estilo de fuente"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="?android:attr/textColorPrimary"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="4dp"/>
+
+    <TextView
+            android:id="@+id/font_panel_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:textStyle="italic"
+            android:textColor="?android:attr/textColorSecondary"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingBottom="6dp"
+            android:text="Escribe algo primero, despues elige un estilo."/>
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="150dp">
+
+        <LinearLayout
+                android:id="@+id/font_panel_style_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"/>
+
+    </ScrollView>
+
+    <Button
+            android:id="@+id/font_panel_back_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:backgroundTint="#68769B"
+            android:textColor="#FFFFFF"
+            android:text="Volver al teclado"/>
+
+</org.dslul.openboard.inputmethod.latin.FontPanelView>
