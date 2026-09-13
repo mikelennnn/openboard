@@ -259,6 +259,9 @@ public final class Constants {
     public static final int CODE_FORMAL_TEXT = -25;
     public static final int CODE_ROMANTIC_TEXT = -26;
     public static final int CODE_DETAIL_TEXT = -27;
+    public static final int CODE_SUMMARIZE_TEXT = -28;
+    public static final int CODE_EMOJI_TEXT = -29;
+    public static final int CODE_SARCASM_TEXT = -30;
 
     public static boolean isLetterCode(final int code) {
         return code >= CODE_SPACE;
@@ -290,6 +293,9 @@ public final class Constants {
         case CODE_FORMAL_TEXT: return "formalText";
         case CODE_ROMANTIC_TEXT: return "romanticText";
         case CODE_DETAIL_TEXT: return "detailText";
+        case CODE_SUMMARIZE_TEXT: return "summarizeText";
+        case CODE_EMOJI_TEXT: return "emojiText";
+        case CODE_SARCASM_TEXT: return "sarcasmText";
         case CODE_TAB: return "tab";
         case CODE_ENTER: return "enter";
         case CODE_SPACE: return "space";
