@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.dslul.openboard.inputmethod.latin.SymbolPanelView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:background="#0D0D0D"
+        android:visibility="gone">
+
+    <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:overScrollMode="never">
+
+        <LinearLayout
+                android:id="@+id/symbol_panel_category_tabs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="4dp"/>
+
+    </HorizontalScrollView>
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="170dp">
+
+        <LinearLayout
+                android:id="@+id/symbol_panel_grid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"/>
+
+    </ScrollView>
+
+    <Button
+            android:id="@+id/symbol_panel_back_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:backgroundTint="#68769B"
+            android:textColor="#FFFFFF"
+            android:text="Volver al teclado"/>
+
+</org.dslul.openboard.inputmethod.latin.SymbolPanelView>
