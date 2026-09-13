@@ -119,6 +119,27 @@
                     android:src="@drawable/ic_detail_doc"
                     android:contentDescription="DETALLAR"
                     style="?attr/suggestionWordStyle" />
+                <ImageButton
+                    android:id="@+id/suggestions_strip_summarize_key"
+                    android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
+                    android:layout_height="fill_parent"
+                    android:src="@drawable/ic_summarize_bolt"
+                    android:contentDescription="RESUMIR"
+                    style="?attr/suggestionWordStyle" />
+                <ImageButton
+                    android:id="@+id/suggestions_strip_emoji_key"
+                    android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
+                    android:layout_height="fill_parent"
+                    android:src="@drawable/ic_emoji_smile"
+                    android:contentDescription="EMOJIS"
+                    style="?attr/suggestionWordStyle" />
+                <ImageButton
+                    android:id="@+id/suggestions_strip_sarcasm_key"
+                    android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
+                    android:layout_height="fill_parent"
+                    android:src="@drawable/ic_sarcasm_wink"
+                    android:contentDescription="SARCASMO"
+                    style="?attr/suggestionWordStyle" />
             </LinearLayout>
         </HorizontalScrollView>
     </LinearLayout>
