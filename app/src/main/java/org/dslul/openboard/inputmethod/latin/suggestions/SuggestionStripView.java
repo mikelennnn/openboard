@@ -78,6 +78,7 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
     private final ImageButton mRudeKey;
     private final ImageButton mTranslateKey;
     private final ImageButton mFontKey;
+    private final ImageButton mSymbolsKey;
     private final ImageButton mFormalKey;
     private final ImageButton mRomanticKey;
     private final ImageButton mDetailKey;
@@ -150,6 +151,7 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         mRudeKey = findViewById(R.id.suggestions_strip_rude_key);
         mTranslateKey = findViewById(R.id.suggestions_strip_translate_key);
         mFontKey = findViewById(R.id.suggestions_strip_font_key);
+        mSymbolsKey = findViewById(R.id.suggestions_strip_symbols_key);
         mFormalKey = findViewById(R.id.suggestions_strip_formal_key);
         mRomanticKey = findViewById(R.id.suggestions_strip_romantic_key);
         mDetailKey = findViewById(R.id.suggestions_strip_detail_key);
@@ -202,6 +204,7 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         mRudeKey.setOnClickListener(this);
         mTranslateKey.setOnClickListener(this);
         mFontKey.setOnClickListener(this);
+        mSymbolsKey.setOnClickListener(this);
         mFormalKey.setOnClickListener(this);
         mRomanticKey.setOnClickListener(this);
         mDetailKey.setOnClickListener(this);
@@ -233,6 +236,7 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         mRudeKey.setVisibility(VISIBLE);
         mTranslateKey.setVisibility(VISIBLE);
         mFontKey.setVisibility(VISIBLE);
+        mSymbolsKey.setVisibility(VISIBLE);
         mFormalKey.setVisibility(VISIBLE);
         mRomanticKey.setVisibility(VISIBLE);
         mDetailKey.setVisibility(VISIBLE);
@@ -522,6 +526,12 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
                     false /* isKeyRepeat */);
             return;
         }
+        if (view == mSymbolsKey) {
+            mListener.onCodeInput(Constants.CODE_SYMBOL_PANEL,
+                    Constants.SUGGESTION_STRIP_COORDINATE, Constants.SUGGESTION_STRIP_COORDINATE,
+                    false /* isKeyRepeat */);
+            return;
+        }
         if (view == mFormalKey) {
             mListener.onCodeInput(Constants.CODE_FORMAL_TEXT,
                     Constants.SUGGESTION_STRIP_COORDINATE, Constants.SUGGESTION_STRIP_COORDINATE,
@@ -585,4 +595,3 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         // This may be overriden by showing suggestions later, if applicable.
     }
 }
-
