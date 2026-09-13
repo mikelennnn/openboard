@@ -1164,6 +1164,20 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
     }
 
     /**
+     * Muestra el panel para elegir estilo de fuente.
+     */
+    public void showFontPanel(final String text, final int textLength) {
+        mKeyboardSwitcher.showFontPanel(text, textLength);
+    }
+
+    /**
+     * Vuelve del panel de fuentes al teclado normal.
+     */
+    public void hideFontPanel() {
+        mKeyboardSwitcher.hideFontPanel();
+    }
+
+    /**
      * This is called when the user has clicked on the extracted text view,
      * when running in fullscreen mode.  The default implementation hides
      * the suggestions view when this happens, but only if the extracted text
@@ -2046,3 +2060,4 @@ public class LatinIME extends InputMethodService implements KeyboardActionListen
         }
     }
 }
+
