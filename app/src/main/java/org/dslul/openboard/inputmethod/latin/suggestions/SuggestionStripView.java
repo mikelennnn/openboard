@@ -80,6 +80,9 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
     private final ImageButton mFormalKey;
     private final ImageButton mRomanticKey;
     private final ImageButton mDetailKey;
+    private final ImageButton mSummarizeKey;
+    private final ImageButton mEmojiKey;
+    private final ImageButton mSarcasmKey;
     MainKeyboardView mMainKeyboardView;
 
     private final View mMoreSuggestionsContainer;
@@ -148,6 +151,9 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         mFormalKey = findViewById(R.id.suggestions_strip_formal_key);
         mRomanticKey = findViewById(R.id.suggestions_strip_romantic_key);
         mDetailKey = findViewById(R.id.suggestions_strip_detail_key);
+        mSummarizeKey = findViewById(R.id.suggestions_strip_summarize_key);
+        mEmojiKey = findViewById(R.id.suggestions_strip_emoji_key);
+        mSarcasmKey = findViewById(R.id.suggestions_strip_sarcasm_key);
         mStripVisibilityGroup = new StripVisibilityGroup(this, mSuggestionsStrip);
 
         for (int pos = 0; pos < SuggestedWords.MAX_SUGGESTIONS; pos++) {
@@ -196,6 +202,9 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         mFormalKey.setOnClickListener(this);
         mRomanticKey.setOnClickListener(this);
         mDetailKey.setOnClickListener(this);
+        mSummarizeKey.setOnClickListener(this);
+        mEmojiKey.setOnClickListener(this);
+        mSarcasmKey.setOnClickListener(this);
 
         mOtherKey.setImageDrawable(iconIncognito);
     }
@@ -223,6 +232,9 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         mFormalKey.setVisibility(VISIBLE);
         mRomanticKey.setVisibility(VISIBLE);
         mDetailKey.setVisibility(VISIBLE);
+        mSummarizeKey.setVisibility(VISIBLE);
+        mEmojiKey.setVisibility(VISIBLE);
+        mSarcasmKey.setVisibility(VISIBLE);
     }
 
     public void setSuggestions(final SuggestedWords suggestedWords, final boolean isRtlLanguage) {
@@ -514,6 +526,24 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         }
         if (view == mDetailKey) {
             mListener.onCodeInput(Constants.CODE_DETAIL_TEXT,
+                    Constants.SUGGESTION_STRIP_COORDINATE, Constants.SUGGESTION_STRIP_COORDINATE,
+                    false /* isKeyRepeat */);
+            return;
+        }
+        if (view == mSummarizeKey) {
+            mListener.onCodeInput(Constants.CODE_SUMMARIZE_TEXT,
+                    Constants.SUGGESTION_STRIP_COORDINATE, Constants.SUGGESTION_STRIP_COORDINATE,
+                    false /* isKeyRepeat */);
+            return;
+        }
+        if (view == mEmojiKey) {
+            mListener.onCodeInput(Constants.CODE_EMOJI_TEXT,
+                    Constants.SUGGESTION_STRIP_COORDINATE, Constants.SUGGESTION_STRIP_COORDINATE,
+                    false /* isKeyRepeat */);
+            return;
+        }
+        if (view == mSarcasmKey) {
+            mListener.onCodeInput(Constants.CODE_SARCASM_TEXT,
                     Constants.SUGGESTION_STRIP_COORDINATE, Constants.SUGGESTION_STRIP_COORDINATE,
                     false /* isKeyRepeat */);
             return;
