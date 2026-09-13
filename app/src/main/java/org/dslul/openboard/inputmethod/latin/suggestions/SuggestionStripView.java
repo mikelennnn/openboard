@@ -77,6 +77,7 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
     private final ImageButton mCorrectKey;
     private final ImageButton mRudeKey;
     private final ImageButton mTranslateKey;
+    private final ImageButton mFontKey;
     private final ImageButton mFormalKey;
     private final ImageButton mRomanticKey;
     private final ImageButton mDetailKey;
@@ -148,6 +149,7 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         mCorrectKey = findViewById(R.id.suggestions_strip_correct_key);
         mRudeKey = findViewById(R.id.suggestions_strip_rude_key);
         mTranslateKey = findViewById(R.id.suggestions_strip_translate_key);
+        mFontKey = findViewById(R.id.suggestions_strip_font_key);
         mFormalKey = findViewById(R.id.suggestions_strip_formal_key);
         mRomanticKey = findViewById(R.id.suggestions_strip_romantic_key);
         mDetailKey = findViewById(R.id.suggestions_strip_detail_key);
@@ -199,6 +201,7 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         mCorrectKey.setOnClickListener(this);
         mRudeKey.setOnClickListener(this);
         mTranslateKey.setOnClickListener(this);
+        mFontKey.setOnClickListener(this);
         mFormalKey.setOnClickListener(this);
         mRomanticKey.setOnClickListener(this);
         mDetailKey.setOnClickListener(this);
@@ -229,6 +232,7 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         mCorrectKey.setVisibility(VISIBLE);
         mRudeKey.setVisibility(VISIBLE);
         mTranslateKey.setVisibility(VISIBLE);
+        mFontKey.setVisibility(VISIBLE);
         mFormalKey.setVisibility(VISIBLE);
         mRomanticKey.setVisibility(VISIBLE);
         mDetailKey.setVisibility(VISIBLE);
@@ -508,6 +512,12 @@ public final class SuggestionStripView extends RelativeLayout implements OnClick
         }
         if (view == mTranslateKey) {
             mListener.onCodeInput(Constants.CODE_TRANSLATE_TEXT,
+                    Constants.SUGGESTION_STRIP_COORDINATE, Constants.SUGGESTION_STRIP_COORDINATE,
+                    false /* isKeyRepeat */);
+            return;
+        }
+        if (view == mFontKey) {
+            mListener.onCodeInput(Constants.CODE_FONT_STYLE,
                     Constants.SUGGESTION_STRIP_COORDINATE, Constants.SUGGESTION_STRIP_COORDINATE,
                     false /* isKeyRepeat */);
             return;
