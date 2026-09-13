@@ -41,4 +41,7 @@
     <include
         android:id="@+id/font_panel_view"
         layout="@layout/font_panel_view" />
+    <include
+        android:id="@+id/symbol_panel_view"
+        layout="@layout/symbol_panel_view" />
 </org.dslul.openboard.inputmethod.latin.InputView>
