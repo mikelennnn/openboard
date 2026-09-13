@@ -37,6 +37,13 @@
             android:contentDescription="TRADUCIR"
             style="?attr/suggestionWordStyle" />
         <ImageButton
+            android:id="@+id/suggestions_strip_font_key"
+            android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
+            android:layout_height="fill_parent"
+            android:src="@drawable/ic_font_pencil"
+            android:contentDescription="FUENTES"
+            style="?attr/suggestionWordStyle" />
+        <ImageButton
             android:id="@+id/suggestions_strip_other_key"
             android:layout_width="@dimen/config_suggestions_strip_edge_key_width"
             android:layout_height="fill_parent"
